@@ -62,18 +62,22 @@ function parseScores(raw) {
   return scores;
 }
 
-function formatOutput(findings, scores, mode) {
+function formatOutput(findings, scores, mode, contentType) {
   const lines = [];
+
+  // Content-type-aware threshold
+  const threshold = contentType === "landing-page" ? 28 : 35;
 
   // Header
   const verdict = scores
-    ? scores.total >= 35
+    ? scores.total >= threshold
       ? "PASS"
       : "REVISE"
     : findings.length === 0
       ? "CLEAN"
       : "PATTERNS_FOUND";
   lines.push(`VERDICT: ${verdict}`);
+  lines.push(`CONTENT_TYPE: ${contentType || "unknown"}`);
   lines.push(`MODE: ${mode}`);
   lines.push("");
 
@@ -148,6 +152,11 @@ async function main() {
     let findings = [];
     let scores = null;
 
+    // Detect content type
+    const isLandingPage = /pricing|cta|get started|sign up|book a|free trial|hero|landing/i.test(content)
+      && content.split(/[.!?]/).length > 10;
+    const contentType = isLandingPage ? "landing-page" : "prose";
+
     // Step 1: Deterministic pattern check
     if (mode !== "score-only") {
       findings = checkPatterns(content);
@@ -160,7 +169,7 @@ async function main() {
       scores = parseScores(raw);
     }
 
-    const output = formatOutput(findings, scores, mode);
+    const output = formatOutput(findings, scores, mode, contentType);
     const result = {
       content: [{ type: "text", text: output }],
     };

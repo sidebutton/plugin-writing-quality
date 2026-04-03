@@ -1,11 +1,11 @@
 {
   "name": "writing-quality",
-  "version": "1.0.0",
-  "description": "AI writing pattern detection and 5-dimension quality scoring. Deterministic checks for banned phrases/structures + LLM scoring for voice, rhythm, authenticity. Sources: humanizer (29 patterns) + stop-slop (5-dim scoring).",
+  "version": "1.1.0",
+  "description": "AI writing pattern detection and 5-dimension quality scoring with content-type-aware thresholds. Deterministic checks for banned phrases/structures + LLM scoring for voice, rhythm, authenticity. Landing pages: 28/50 threshold with adjusted Rhythm/Trust/Authenticity. Prose: 35/50. Sources: humanizer (29 patterns) + stop-slop (5-dim scoring). Calibrated against Stripe, Linear, Basecamp, Vercel, Notion.",
   "tools": [
     {
       "name": "check_writing_quality",
-      "description": "Score content on 5 dimensions (Directness, Rhythm, Trust, Authenticity, Density) and detect AI writing patterns. Returns structured findings with pass/fail verdict at 35/50 threshold. Uses deterministic pattern matching for banned phrases/structures, LLM for judgment-based scoring.",
+      "description": "Score content on 5 dimensions (Directness, Rhythm, Trust, Authenticity, Density) and detect AI writing patterns. Content-type-aware: landing pages use 28/50 threshold with adjusted Rhythm/Trust/Authenticity scoring; prose uses 35/50. Deterministic pattern matching for banned phrases/structures, LLM for judgment-based scoring.",
       "inputSchema": {
         "type": "object",
         "properties": {
