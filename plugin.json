@@ -1,0 +1,31 @@
+{
+  "name": "writing-quality",
+  "version": "1.0.0",
+  "description": "AI writing pattern detection and 5-dimension quality scoring. Deterministic checks for banned phrases/structures + LLM scoring for voice, rhythm, authenticity. Sources: humanizer (29 patterns) + stop-slop (5-dim scoring).",
+  "tools": [
+    {
+      "name": "check_writing_quality",
+      "description": "Score content on 5 dimensions (Directness, Rhythm, Trust, Authenticity, Density) and detect AI writing patterns. Returns structured findings with pass/fail verdict at 35/50 threshold. Uses deterministic pattern matching for banned phrases/structures, LLM for judgment-based scoring.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "description": "The text content to audit"
+          },
+          "context": {
+            "type": "string",
+            "description": "Optional brand context (voice rules, audience, constraints)"
+          },
+          "mode": {
+            "type": "string",
+            "enum": ["full", "patterns-only", "score-only"],
+            "description": "Audit mode: full (patterns + scoring), patterns-only (deterministic only, no LLM), score-only (LLM scoring only). Default: full."
+          }
+        },
+        "required": ["content"]
+      },
+      "handler": "node handler.js"
+    }
+  ]
+}
